@@ -35,7 +35,31 @@ public class UserInterface {
             else if (command.equals("look")) {
                 System.out.println(adventure.look());
             }
+            else if (command.equals("inventory") || command.equals("inv")) {
+                System.out.println(adventure.inventory());
+            }
+            else if (command.startsWith("take ")) {
+                String itemName = command.substring(5).trim();
+                Item item = adventure.takeItem(itemName);
 
+                if (item != null) {
+                    System.out.println("You have taken " + item.getLongName());
+                } else {
+                    System.out.println("There is nothing like " + itemName
+                            + " to take around here");
+                }
+            }
+            else if (command.startsWith("drop ")) {
+                String itemName = command.substring(5).trim();
+                Item item = adventure.dropItem(itemName);
+
+                if (item != null) {
+                    System.out.println("You have dropped " + item.getLongName());
+                } else {
+                    System.out.println("You don't have anything like " + itemName
+                            + " in your inventory");
+                }
+            }
             else {
                 parseInput(command);
             }
