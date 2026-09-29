@@ -19,7 +19,13 @@ public class Adventure {
     public String look() {
         Room currentRoom = player.getCurrentRoom();
 
-        return "You are in " + currentRoom.getName()
+        String text = "You are in " + currentRoom.getName()
                 + "\n" + currentRoom.getDescription();
+
+        for (Item item : currentRoom.getItems()) {
+            text += "\n- " + item.getLongName();
+        }
+
+        return text;
     }
 }

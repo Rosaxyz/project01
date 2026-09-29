@@ -76,6 +76,8 @@ public class Map {
         room8.setEast(room9);
         room9.setWest(room8);
 
+        Item crystal = new Item("crystal", "a glowing purple crystal");
+        room1.addItem(crystal);
         startRoom = room1;
     }
 
