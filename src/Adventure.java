@@ -28,4 +28,27 @@ public class Adventure {
 
         return text;
     }
+    public Item takeItem(String shortName) {
+        return player.takeItem(shortName);
+    }
+
+    public Item dropItem(String shortName) {
+        return player.dropItem(shortName);
+    }
+    // Indsæt inventory()-metoden her
+
+    public String inventory() {
+        if (player.getItems().isEmpty()) {
+            return "Your inventory is empty.";
+        }
+
+        String text = "You are carrying:";
+
+        for (Item item : player.getItems()) {
+            text += "\n- " + item.getLongName();
+        }
+
+        return text;
+    }
+
 }

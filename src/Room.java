@@ -68,5 +68,14 @@ public class Room {
         public ArrayList<Item> getItems() {
             return items;
         }
+    public Item findItem(String shortName) {
+        for (Item item : items) {
+            if (item.getShortName().equals(shortName)) {
+                return item;
+            }
+        }
+
+        return null;
+    }
         }
 // Denne afslutter hele Room-klassen
