@@ -121,12 +121,15 @@ public class UserInterface {
     public void showHelp() {
 
         System.out.println("Available commands:");
-        System.out.println("go north / north / n");
-        System.out.println("go east / east / e");
-        System.out.println("go south / south / s");
-        System.out.println("go west / west / w");
+        System.out.println("go north/north/n");
+        System.out.println("go east/east/e");
+        System.out.println("go south/south/s");
+        System.out.println("go west/west/w");
         System.out.println("look");
         System.out.println("help");
         System.out.println("exit");
+        System.out.println("take <item>");
+        System.out.println("drop <item>");
+        System.out.println("inventory/inv");
     }
 }

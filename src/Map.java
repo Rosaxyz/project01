@@ -26,7 +26,7 @@ public class Map {
 
         Room room5 = new Room(
                 "Room 5",
-                "You have discovered a hidden chamber. A mysterious blue light shines from the center of the room."
+                "You have discovered a hidden chamber. A mysterious purple light shines from the center of the room."
         );
 
         Room room6 = new Room(
@@ -76,9 +76,38 @@ public class Map {
         room8.setEast(room9);
         room9.setWest(room8);
 
-        Item crystal = new Item("crystal", "a glowing purple crystal");
-        room1.addItem(crystal);
+        Item torch = new Item("torch", "an old wooden torch");
+        room1.addItem(torch);
         startRoom = room1;
+
+        Item candlestick = new Item("helmet", "an old knight's helmet");
+        room2.addItem(candlestick);
+
+        Item amulet = new Item("amulet", "an ancient mysterious amulet");
+        room3.addItem(amulet);
+
+        Item book = new Item("book", "a dusty old book");
+        room4.addItem(book);
+
+        Item crystal = new Item("crystal", "a glowing purple crystal");
+        room5.addItem(crystal);
+        Item rose = new Item("rose", "a deep crimson rose with silver thorns");
+        room5.addItem(rose);
+        Item crown = new Item("crown", "a black crown with crimson gemstones");
+        room5.addItem(crown);
+
+        Item spyglass = new Item("spyglass", "an old brass spyglass");
+        room6.addItem(spyglass);
+
+        Item key = new Item("key","a mysterious shiney key");
+        room7.addItem(key);
+
+        Item sword = new Item("sword", "a rusty old sword");
+        room8.addItem(sword);
+
+        Item goblet = new Item("goblet", "an ancient silver goblet");
+        room9.addItem(goblet);
+
     }
 
     public Room getStartRoom() {
