@@ -80,5 +80,14 @@ public class Room {
 
         return null;
     }
+    public String getFullDescription() {
+        String text = "You are in " + name + "\n" + description;
+
+        for (Item item : items) {
+            text += "\n- " + item.getLongName();
+        }
+
+        return text;
+    }
 }
 // Denne afslutter hele Room-klassen

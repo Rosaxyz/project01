@@ -17,17 +17,9 @@ public class Adventure {
     }
 
     public String look() {
-        Room currentRoom = player.getCurrentRoom();
-
-        String text = "You are in " + currentRoom.getName()
-                + "\n" + currentRoom.getDescription();
-
-        for (Item item : currentRoom.getItems()) {
-            text += "\n- " + item.getLongName();
-        }
-
-        return text;
+        return player.look();
     }
+
     public Item takeItem(String shortName) {
         return player.takeItem(shortName);
     }
@@ -35,20 +27,8 @@ public class Adventure {
     public Item dropItem(String shortName) {
         return player.dropItem(shortName);
     }
-    // Indsæt inventory()-metoden her
 
     public String inventory() {
-        if (player.getItems().isEmpty()) {
-            return "Your inventory is empty.";
-        }
-
-        String text = "You are carrying:";
-
-        for (Item item : player.getItems()) {
-            text += "\n- " + item.getLongName();
-        }
-
-        return text;
+        return player.getInventoryDescription();
     }
-
 }

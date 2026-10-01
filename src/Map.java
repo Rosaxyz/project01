@@ -80,8 +80,8 @@ public class Map {
         room1.addItem(torch);
         startRoom = room1;
 
-        Item candlestick = new Item("helmet", "an old knight's helmet");
-        room2.addItem(candlestick);
+        Item helmet = new Item("helmet", "an old knight's helmet");
+        room2.addItem(helmet);
 
         Item amulet = new Item("amulet", "an ancient mysterious amulet");
         room3.addItem(amulet);
@@ -96,8 +96,8 @@ public class Map {
         Item crown = new Item("crown", "a black crown with crimson gemstones");
         room5.addItem(crown);
 
-        Item spyglass = new Item("spyglass", "an old brass spyglass");
-        room6.addItem(spyglass);
+        Item shield = new Item("shield", "an ancient shield with a blood-red crest");
+        room6.addItem(shield);
 
         Item key = new Item("key","a mysterious shiney key");
         room7.addItem(key);

@@ -70,4 +70,21 @@ public class Player {
 
         return item;
     }
+    public String look() {
+        return currentRoom.getFullDescription();
+    }
+
+    public String getInventoryDescription() {
+        if (inventory.isEmpty()) {
+            return "Your inventory is empty.";
+        }
+
+        String text = "You are carrying:";
+
+        for (Item item : inventory) {
+            text += "\n- " + item.getLongName();
+        }
+
+        return text;
+    }
 }
