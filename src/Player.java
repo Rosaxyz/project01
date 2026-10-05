@@ -102,6 +102,37 @@ public class Player {
 
         return new EatOutcome(EatResult.EATEN, itemName, healthChange);
     }
+    public DrinkOutcome drink(String shortName) {
+        Item item = findItem(shortName);
+        boolean foundInInventory = item != null;
+
+        if (item == null) {
+            item = currentRoom.findItem(shortName);
+        }
+
+        if (item == null) {
+            return new DrinkOutcome(DrinkResult.NOT_FOUND, null, 0);
+        }
+
+        String itemName = item.getLongName();
+
+        if (!(item instanceof Liquid)) {
+            return new DrinkOutcome(DrinkResult.NOT_LIQUID, itemName, 0);
+        }
+
+        Liquid liquid = (Liquid) item;
+        int healthChange = liquid.getHealthPoints();
+
+        health += healthChange;
+
+        if (foundInInventory) {
+            removeItem(liquid);
+        } else {
+            currentRoom.removeItem(liquid);
+        }
+
+        return new DrinkOutcome(DrinkResult.DRUNK, itemName, healthChange);
+    }
     public String look() {
         return currentRoom.getFullDescription();
     }

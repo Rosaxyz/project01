@@ -114,8 +114,18 @@ public class Map {
         Food mushroom = new Food("mushroom", "a poisonous crypt mushroom", -50);
         room4.addItem(mushroom);
 
-        Food holywater = new Food("holywater", "a vial of holy water", 100);
+        Liquid holywater = new Liquid(
+                "holy water",
+                "a vial of holy water",
+                100
+        );
         room5.addItem(holywater);
+
+        Liquid elixir = new Liquid(
+                "elixir",
+                "a mysterious green elixir",
+                -99);
+        room9.addItem(elixir);
     }
 
     public Room getStartRoom() {

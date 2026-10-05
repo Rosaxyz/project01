@@ -67,6 +67,10 @@ public class UserInterface {
                 String itemName = command.substring(4).trim();
                 eatItem(itemName);
             }
+            else if (command.startsWith("drink ")) {
+                String itemName = command.substring(6).trim();
+                drinkItem(itemName);
+            }
             else {
                 parseInput(command);
             }
@@ -156,6 +160,38 @@ public class UserInterface {
             }
         }
     }
+    private void drinkItem(String itemName) {
+        DrinkOutcome outcome = adventure.drink(itemName);
+
+        switch (outcome.getResult()) {
+            case NOT_FOUND -> {
+                System.out.println(
+                        "There is nothing like " + itemName
+                                + " to drink around here"
+                );
+            }
+
+            case NOT_LIQUID -> {
+                System.out.println(
+                        "You cannot drink the " + outcome.getItemName()
+                );
+            }
+
+            case DRUNK -> {
+                String message = "You drink the " + outcome.getItemName() + ".";
+
+                if (outcome.getHealthChange() > 0) {
+                    message += " You feel a little better.";
+                } else if (outcome.getHealthChange() < 0) {
+                    message += " That was a mistake.";
+                } else {
+                    message += " Your health stays the same.";
+                }
+
+                System.out.println(message);
+            }
+        }
+    }
     private void showHealth() {
         int health = adventure.getHealth();
         String description;
@@ -190,5 +226,6 @@ public class UserInterface {
         System.out.println("inventory/inv");
         System.out.println("health");
         System.out.println("eat <food>");
+        System.out.println("drink <liquid>");
     }
 }

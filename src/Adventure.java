@@ -37,4 +37,7 @@ public class Adventure {
     public EatOutcome eat(String shortName) {
         return player.eat(shortName);
     }
+    public DrinkOutcome drink(String shortName) {
+        return player.drink(shortName);
+    }
 }
