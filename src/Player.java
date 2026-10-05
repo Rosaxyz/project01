@@ -4,6 +4,7 @@ public class Player {
 
     private Room currentRoom;
     private ArrayList<Item> inventory = new ArrayList<>();
+    private int health = 100;
 
     public Player(Room startRoom) {
         currentRoom = startRoom;
@@ -70,6 +71,37 @@ public class Player {
 
         return item;
     }
+    public EatOutcome eat(String shortName) {
+        Item item = findItem(shortName);
+        boolean foundInInventory = item != null;
+
+        if (item == null) {
+            item = currentRoom.findItem(shortName);
+        }
+
+        if (item == null) {
+            return new EatOutcome(EatResult.NOT_FOUND, null, 0);
+        }
+
+        String itemName = item.getLongName();
+
+        if (!(item instanceof Food)) {
+            return new EatOutcome(EatResult.NOT_FOOD, itemName, 0);
+        }
+
+        Food food = (Food) item;
+        int healthChange = food.getHealthPoints();
+
+        health += healthChange;
+
+        if (foundInInventory) {
+            removeItem(food);
+        } else {
+            currentRoom.removeItem(food);
+        }
+
+        return new EatOutcome(EatResult.EATEN, itemName, healthChange);
+    }
     public String look() {
         return currentRoom.getFullDescription();
     }
@@ -86,5 +118,9 @@ public class Player {
         }
 
         return text;
+
+    }
+    public int getHealth() {
+        return health;
     }
 }

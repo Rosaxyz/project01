@@ -108,6 +108,14 @@ public class Map {
         Item goblet = new Item("goblet", "an ancient silver goblet");
         room9.addItem(goblet);
 
+        Food cake = new Food("cake", "a slice of dark chocolate cake with crimson cherries", 10);
+        room3.addItem(cake);
+
+        Food mushroom = new Food("mushroom", "a poisonous crypt mushroom", -50);
+        room4.addItem(mushroom);
+
+        Food holywater = new Food("holywater", "a vial of holy water", 100);
+        room5.addItem(holywater);
     }
 
     public Room getStartRoom() {

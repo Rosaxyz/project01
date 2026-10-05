@@ -31,4 +31,10 @@ public class Adventure {
     public String inventory() {
         return player.getInventoryDescription();
     }
+    public int getHealth() {
+        return player.getHealth();
+    }
+    public EatOutcome eat(String shortName) {
+        return player.eat(shortName);
+    }
 }
