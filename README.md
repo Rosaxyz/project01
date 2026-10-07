@@ -17,7 +17,6 @@ waiting to be discovered.
 
 ## Castle Map
 
-![Map of the castle]
 <img width="1374" height="1145" alt="Det forladte slots hemmelige rum" src="https://github.com/user-attachments/assets/3c874d3b-8ef1-4715-802d-d07b1469ee5d" />
 
 
