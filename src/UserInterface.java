@@ -71,6 +71,13 @@ public class UserInterface {
                 String itemName = command.substring(6).trim();
                 drinkItem(itemName);
             }
+            else if (command.startsWith("equip ")) {
+                String itemName = command.substring(6).trim();
+                equipItem(itemName);
+            }
+            else if (command.equals("attack")) {
+                attack();
+            }
             else {
                 parseInput(command);
             }
@@ -192,6 +199,64 @@ public class UserInterface {
             }
         }
     }
+    private void equipItem(String itemName) {
+        EquipResult result = adventure.equip(itemName);
+
+        switch (result) {
+            case NOT_FOUND -> {
+                System.out.println(
+                        "You don't have anything like " + itemName
+                                + " in your inventory"
+                );
+            }
+
+            case NOT_WEAPON -> {
+                System.out.println(
+                        "The item '" + itemName + "' is not a weapon"
+                );
+            }
+
+            case EQUIPPED -> {
+                Weapon weapon = adventure.getEquippedWeapon();
+
+                System.out.println(
+                        "You have equipped " + weapon.getLongName()
+                );
+            }
+        }
+    }
+
+    private void attack() {
+        AttackResult result = adventure.attack();
+
+        switch (result) {
+            case NO_WEAPON -> {
+                System.out.println("You don't have a weapon equipped");
+            }
+
+            case CANNOT_USE -> {
+                System.out.println(
+                        "Your equipped weapon is out of ammunition"
+                );
+            }
+
+            case ATTACKED -> {
+                Weapon weapon = adventure.getEquippedWeapon();
+
+                String message = "You " + weapon.getAttackVerb()
+                        + " " + weapon.getLongName()
+                        + " at the empty air.";
+
+                String usesLeftText = weapon.getUsesLeftText();
+
+                if (!usesLeftText.isEmpty()) {
+                    message += " " + usesLeftText;
+                }
+
+                System.out.println(message);
+            }
+        }
+    }
     private void showHealth() {
         int health = adventure.getHealth();
         String description;
@@ -227,5 +292,7 @@ public class UserInterface {
         System.out.println("health");
         System.out.println("eat <food>");
         System.out.println("drink <liquid>");
+        System.out.println("equip <weapon>");
+        System.out.println("attack");
     }
 }

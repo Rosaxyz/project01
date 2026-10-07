@@ -85,9 +85,13 @@ public class Map {
 
         Item amulet = new Item("amulet", "an ancient mysterious amulet");
         room3.addItem(amulet);
+        Food cake = new Food("cake", "a slice of dark chocolate cake with crimson cherries", 10);
+        room3.addItem(cake);
 
         Item book = new Item("book", "a dusty old book");
         room4.addItem(book);
+        Food mushroom = new Food("mushroom", "a poisonous crypt mushroom", -50);
+        room4.addItem(mushroom);
 
         Item crystal = new Item("crystal", "a glowing purple crystal");
         room5.addItem(crystal);
@@ -95,31 +99,33 @@ public class Map {
         room5.addItem(rose);
         Item crown = new Item("crown", "a black crown with crimson gemstones");
         room5.addItem(crown);
-
-        Item shield = new Item("shield", "an ancient shield with a blood-red crest");
-        room6.addItem(shield);
-
-        Item key = new Item("key","a mysterious shiney key");
-        room7.addItem(key);
-
-        Item sword = new Item("sword", "a rusty old sword");
-        room8.addItem(sword);
-
-        Item goblet = new Item("goblet", "an ancient silver goblet");
-        room9.addItem(goblet);
-
-        Food cake = new Food("cake", "a slice of dark chocolate cake with crimson cherries", 10);
-        room3.addItem(cake);
-
-        Food mushroom = new Food("mushroom", "a poisonous crypt mushroom", -50);
-        room4.addItem(mushroom);
-
         Liquid holywater = new Liquid(
                 "holy water",
                 "a vial of holy water",
                 100
         );
         room5.addItem(holywater);
+
+        Item shield = new Item("shield", "an ancient shield with a blood-red crest");
+        room6.addItem(shield);
+        Weapon crossbow = new RangedWeapon(
+                "crossbow",
+                "an ancient crossbow with silver bolts",
+                3
+        );
+        room6.addItem(crossbow);
+
+        Item key = new Item("key","a mysterious shiney key");
+        room7.addItem(key);
+
+        Weapon sword = new MeleeWeapon(
+                "sword",
+                "a rusty old sword"
+        );
+        room8.addItem(sword);
+
+        Item goblet = new Item("goblet", "an ancient silver goblet");
+        room9.addItem(goblet);
 
         Liquid elixir = new Liquid(
                 "elixir",

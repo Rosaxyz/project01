@@ -5,6 +5,7 @@ public class Player {
     private Room currentRoom;
     private ArrayList<Item> inventory = new ArrayList<>();
     private int health = 100;
+    private Weapon equippedWeapon;
 
     public Player(Room startRoom) {
         currentRoom = startRoom;
@@ -37,8 +38,11 @@ public class Player {
 
     public void removeItem(Item item) {
         inventory.remove(item);
-    }
 
+        if (item == equippedWeapon) {
+            equippedWeapon = null;
+        }
+    }
     public ArrayList<Item> getItems() {
         return inventory;
     }
@@ -148,10 +152,46 @@ public class Player {
             text += "\n- " + item.getLongName();
         }
 
-        return text;
+        if (equippedWeapon != null) {
+            text += "\nEquipped: " + equippedWeapon.getLongName();
+        }
 
+        return text;
     }
     public int getHealth() {
         return health;
+    }
+    public EquipResult equip(String shortName) {
+        Item item = findItem(shortName);
+
+        if (item == null) {
+            return EquipResult.NOT_FOUND;
+        }
+
+        if (!(item instanceof Weapon)) {
+            return EquipResult.NOT_WEAPON;
+        }
+
+        equippedWeapon = (Weapon) item;
+
+        return EquipResult.EQUIPPED;
+    }
+
+    public AttackResult attack() {
+        if (equippedWeapon == null) {
+            return AttackResult.NO_WEAPON;
+        }
+
+        if (!equippedWeapon.canUse()) {
+            return AttackResult.CANNOT_USE;
+        }
+
+        equippedWeapon.use();
+
+        return AttackResult.ATTACKED;
+    }
+
+    public Weapon getEquippedWeapon() {
+        return equippedWeapon;
     }
 }

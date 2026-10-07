@@ -40,4 +40,15 @@ public class Adventure {
     public DrinkOutcome drink(String shortName) {
         return player.drink(shortName);
     }
+    public EquipResult equip(String shortName) {
+        return player.equip(shortName);
+    }
+
+    public AttackResult attack() {
+        return player.attack();
+    }
+
+    public Weapon getEquippedWeapon() {
+        return player.getEquippedWeapon();
+    }
 }
