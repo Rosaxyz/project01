@@ -12,7 +12,7 @@ public class Adventure {
         player = new Player(map.getStartRoom());
     }
 
-    public boolean go(String direction) {
+    public MoveResult go(String direction) {
         return player.move(direction);
     }
 
@@ -44,11 +44,14 @@ public class Adventure {
         return player.equip(shortName);
     }
 
-    public AttackResult attack() {
-        return player.attack();
+    public AttackOutcome attack(String enemyName) {
+        return player.attack(enemyName);
     }
 
     public Weapon getEquippedWeapon() {
         return player.getEquippedWeapon();
     }
+
+    public boolean isPlayerAlive() { return player.isAlive(); }
+
 }

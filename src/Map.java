@@ -85,7 +85,7 @@ public class Map {
 
         Item amulet = new Item("amulet", "an ancient mysterious amulet");
         room3.addItem(amulet);
-        Food cake = new Food("cake", "a slice of dark chocolate cake with crimson cherries", 10);
+        Food cake = new Food("cake", "a slice of dark chocolate cake with crimson cherries", 34);
         room3.addItem(cake);
 
         Item book = new Item("book", "a dusty old book");
@@ -97,12 +97,12 @@ public class Map {
         room5.addItem(crystal);
         Item rose = new Item("rose", "a deep crimson rose with silver thorns");
         room5.addItem(rose);
-        Item crown = new Item("crown", "a black crown with crimson gemstones");
+        Item crown = new Item("crown", "a black crown with crimson rubies");
         room5.addItem(crown);
         Liquid holywater = new Liquid(
                 "holy water",
                 "a vial of holy water",
-                100
+                999
         );
         room5.addItem(holywater);
 
@@ -111,16 +111,18 @@ public class Map {
         Weapon crossbow = new RangedWeapon(
                 "crossbow",
                 "an ancient crossbow with silver bolts",
+                40,
                 3
         );
         room6.addItem(crossbow);
 
-        Item key = new Item("key","a mysterious shiney key");
+        Item key = new Item("key", "a mysterious shiney key");
         room7.addItem(key);
 
         Weapon sword = new MeleeWeapon(
                 "sword",
-                "a rusty old sword"
+                "a rusty old sword",
+                20
         );
         room8.addItem(sword);
 
@@ -132,6 +134,26 @@ public class Map {
                 "a mysterious green elixir",
                 -99);
         room9.addItem(elixir);
+
+        Weapon ganondorfWeapon = new MeleeWeapon(
+                "dark sword", "Ganondorf's dark sword", 20);
+        Enemy ganondorf = new Enemy(
+                "ganondorf", "Ganondorf",
+                "Ganondorf watches from the shadows, gripping a dark sword. His magic seals the treasure room.",
+                100, ganondorfWeapon, room2);
+        room2.addEnemy(ganondorf);
+
+        Weapon sephirothWeapon = new MeleeWeapon(
+                "masamune", "Masamune, Sephiroth's long blade", 84);
+        Enemy sephiroth = new Enemy(
+                "sephiroth", "Sephiroth",
+                "The silver-haired Sephiroth waits in the purple light, holding his long blade Masamune.",
+                300, sephirothWeapon, room5);
+        room5.addEnemy(sephiroth);
+
+        // Ganondorf er i rum 2, men hans liv blokerer nord fra rum 8.
+        // isNorthBlocked() spørger isAlive(), også efter han er fjernet fra rum 2.
+        room8.setNorthGuard(ganondorf);
     }
 
     public Room getStartRoom() {

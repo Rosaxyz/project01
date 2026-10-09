@@ -6,6 +6,8 @@ public class Room {
     private String description;
 
     private ArrayList<Item> items = new ArrayList<>();
+    private ArrayList<Enemy> enemies = new ArrayList<>();
+    private Enemy northGuard;
 
     private Room north;
     private Room east;
@@ -87,7 +89,38 @@ public class Room {
             text += "\n- " + item.getLongName();
         }
 
+        for (Enemy enemy : enemies) {
+            text += "\nBeware! Here lurks: " + enemy.getLongName();
+            text += "\n" + enemy.getDescription();
+        }
         return text;
     }
+
+    public void addEnemy(Enemy enemy) { enemies.add(enemy); }
+
+    public void removeEnemy(Enemy enemy) {
+        enemies.remove(enemy);
+        if (enemy == northGuard) {
+            northGuard = null;
+        }
+    }
+
+    public ArrayList<Enemy> getEnemies() { return enemies; }
+
+    public Enemy findEnemy(String shortName) {
+        for (Enemy enemy : enemies) {
+            if (enemy.getShortName().equals(shortName)) {
+                return enemy;
+            }
+        }
+        return null;
+    }
+
+    public void setNorthGuard(Enemy enemy) { northGuard = enemy; }
+
+    public boolean isNorthBlocked() {
+        return northGuard != null && northGuard.isAlive();
+    }
+
 }
 // Denne afslutter hele Room-klassen

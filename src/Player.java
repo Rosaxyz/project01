@@ -11,8 +11,7 @@ public class Player {
         currentRoom = startRoom;
     }
 
-    public boolean move(String direction) {
-
+    public MoveResult move(String direction) {
         Room desiredRoom = switch (direction) {
             case "north" -> currentRoom.getNorth();
             case "south" -> currentRoom.getSouth();
@@ -20,13 +19,14 @@ public class Player {
             case "west" -> currentRoom.getWest();
             default -> null;
         };
-
-        if (desiredRoom != null) {
-            currentRoom = desiredRoom;
-            return true;
-        } else {
-            return false;
+        if (desiredRoom == null) {
+            return MoveResult.NO_EXIT;
         }
+        if (direction.equals("north") && currentRoom.isNorthBlocked()) {
+            return MoveResult.BLOCKED;
+        }
+        currentRoom = desiredRoom;
+        return MoveResult.MOVED;
     }
 
     public Room getCurrentRoom() {
@@ -177,21 +177,51 @@ public class Player {
         return EquipResult.EQUIPPED;
     }
 
-    public AttackResult attack() {
+    public AttackOutcome attack(String enemyName) {
         if (equippedWeapon == null) {
-            return AttackResult.NO_WEAPON;
+            return new AttackOutcome(AttackResult.NO_WEAPON, null, null, 0, 0);
+        }
+        if (!equippedWeapon.canUse()) {
+            return new AttackOutcome(AttackResult.CANNOT_USE, equippedWeapon, null, 0, 0);
         }
 
-        if (!equippedWeapon.canUse()) {
-            return AttackResult.CANNOT_USE;
+        // Find maalet foer use(), saa et forkert navn aldrig koster et skud.
+        Enemy enemy = null;
+        if (!enemyName.isEmpty()) {
+            enemy = currentRoom.findEnemy(enemyName);
+            if (enemy == null) {
+                return new AttackOutcome(AttackResult.ENEMY_NOT_FOUND, equippedWeapon, null, 0, 0);
+            }
+        } else if (!currentRoom.getEnemies().isEmpty()) {
+            enemy = currentRoom.getEnemies().get(0);
         }
 
         equippedWeapon.use();
+        if (enemy == null) {
+            return new AttackOutcome(AttackResult.AIR_ATTACKED, equippedWeapon, null, 0, 0);
+        }
 
-        return AttackResult.ATTACKED;
+        int damageDealt = equippedWeapon.getDamage();
+        boolean enemyDied = enemy.hit(damageDealt);
+        if (enemyDied) {
+            return new AttackOutcome(AttackResult.ENEMY_DIED, equippedWeapon, enemy, damageDealt, 0);
+        }
+        if (!enemy.getWeapon().canUse()) {
+            return new AttackOutcome(AttackResult.ENEMY_CANNOT_ATTACK, equippedWeapon, enemy, damageDealt, 0);
+        }
+        int damageReceived = enemy.attack(this);
+        return new AttackOutcome(AttackResult.ENEMY_HIT, equippedWeapon, enemy, damageDealt, damageReceived);
     }
 
     public Weapon getEquippedWeapon() {
         return equippedWeapon;
     }
+
+    public boolean isAlive() { return health > 0; }
+
+    public boolean hit(int damage) {
+        health -= damage;
+        return !isAlive();
+    }
+
 }

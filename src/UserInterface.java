@@ -75,11 +75,22 @@ public class UserInterface {
                 String itemName = command.substring(6).trim();
                 equipItem(itemName);
             }
-            else if (command.equals("attack")) {
-                attack();
+            else if (command.equals("attack") || command.startsWith("attack ")) {
+                String enemyName = "";
+                if (command.startsWith("attack ")) {
+                    enemyName = command.substring(7).trim();
+                }
+                attack(enemyName);
             }
             else {
                 parseInput(command);
+            }
+
+            // Samme kontrol efter kamp, mad og drikke.
+            if (!adventure.isPlayerAlive()) {
+                System.out.println("Your health has fallen to " + adventure.getHealth() + ".");
+                System.out.println("You have died. Game over.");
+                break;
             }
         }
 
@@ -127,12 +138,12 @@ public class UserInterface {
             return;
         }
 
-        boolean moved = adventure.go(direction);
-
-        if (moved) {
-            System.out.println(adventure.look());
-        } else {
-            System.out.println("You cannot go that way");
+        MoveResult result = adventure.go(direction);
+        switch (result) {
+            case MOVED -> System.out.println(adventure.look());
+            case NO_EXIT -> System.out.println("You cannot go that way");
+            case BLOCKED -> System.out.println(
+                    "The passage is sealed. Defeat Ganondorf to enter.");
         }
     }
     private void eatItem(String itemName) {
@@ -226,35 +237,50 @@ public class UserInterface {
         }
     }
 
-    private void attack() {
-        AttackResult result = adventure.attack();
-
-        switch (result) {
-            case NO_WEAPON -> {
-                System.out.println("You don't have a weapon equipped");
+    private void attack(String enemyName) {
+        AttackOutcome outcome = adventure.attack(enemyName);
+        switch (outcome.getResult()) {
+            case NO_WEAPON -> System.out.println("You don't have a weapon equipped");
+            case CANNOT_USE -> System.out.println("Your equipped weapon is out of ammunition");
+            case ENEMY_NOT_FOUND -> System.out.println(
+                    "There is no enemy like " + enemyName + " around here");
+            case AIR_ATTACKED -> {
+                Weapon weapon = outcome.getPlayerWeapon();
+                System.out.println("You " + weapon.getAttackVerb() + " "
+                        + weapon.getLongName() + " at the empty air.");
+                showWeaponUses(weapon);
             }
-
-            case CANNOT_USE -> {
-                System.out.println(
-                        "Your equipped weapon is out of ammunition"
-                );
-            }
-
-            case ATTACKED -> {
-                Weapon weapon = adventure.getEquippedWeapon();
-
-                String message = "You " + weapon.getAttackVerb()
-                        + " " + weapon.getLongName()
-                        + " at the empty air.";
-
-                String usesLeftText = weapon.getUsesLeftText();
-
-                if (!usesLeftText.isEmpty()) {
-                    message += " " + usesLeftText;
+            case ENEMY_DIED, ENEMY_HIT, ENEMY_CANNOT_ATTACK -> {
+                Enemy enemy = outcome.getEnemy();
+                Weapon playerWeapon = outcome.getPlayerWeapon();
+                System.out.println("You hit " + enemy.getLongName() + " with "
+                        + playerWeapon.getLongName() + " for "
+                        + outcome.getDamageDealt() + " damage.");
+                showWeaponUses(playerWeapon);
+                switch (outcome.getResult()) {
+                    case ENEMY_DIED -> System.out.println(enemy.getLongName()
+                            + " dies, dropping " + enemy.getWeapon().getLongName() + ".");
+                    case ENEMY_CANNOT_ATTACK -> System.out.println(enemy.getLongName()
+                            + " cannot attack back: its weapon is out of ammunition.");
+                    case ENEMY_HIT -> {
+                        System.out.println(enemy.getLongName() + " attacks you with "
+                                + enemy.getWeapon().getLongName() + " for "
+                                + outcome.getDamageReceived() + " damage.");
+                        String usesLeft = enemy.getWeapon().getUsesLeftText();
+                        if (!usesLeft.isEmpty()) {
+                            System.out.println("Enemy weapon: " + usesLeft);
+                        }
+                        System.out.println("Your health: " + adventure.getHealth());
+                    }
                 }
-
-                System.out.println(message);
             }
+        }
+    }
+
+    private void showWeaponUses(Weapon weapon) {
+        String usesLeft = weapon.getUsesLeftText();
+        if (!usesLeft.isEmpty()) {
+            System.out.println(usesLeft);
         }
     }
     private void showHealth() {
@@ -293,6 +319,6 @@ public class UserInterface {
         System.out.println("eat <food>");
         System.out.println("drink <liquid>");
         System.out.println("equip <weapon>");
-        System.out.println("attack");
+        System.out.println("attack [enemy] - attack a named enemy or the first enemy in the room");
     }
 }
